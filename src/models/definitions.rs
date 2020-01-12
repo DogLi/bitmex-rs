@@ -1,7 +1,7 @@
 use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use uuid::Uuid;
-use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Public Announcements
 pub struct Announcement {
@@ -9,16 +9,16 @@ pub struct Announcement {
     pub link: Option<String>,
     pub title: Option<String>,
     pub content: Option<String>,
-    pub date: Option<DateTime<Utc>>
+    pub date: Option<DateTime<Utc>>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Error {
-    pub error: ErrorError
+    pub error: ErrorError,
 }
 #[derive(Clone, Debug, Deserialize, Serialize, Default)]
 pub struct ErrorError {
     pub message: Option<String>,
-    pub name: Option<String>
+    pub name: Option<String>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Persistent API Keys for Developers
@@ -32,7 +32,7 @@ pub struct APIKey {
     pub enabled: Option<bool>,
     #[serde(rename = "userId")]
     pub user_id: i32,
-    pub created: Option<DateTime<Utc>>
+    pub created: Option<DateTime<Utc>>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Trollbox Data
@@ -45,17 +45,17 @@ pub struct Chat {
     #[serde(rename = "fromBot")]
     pub from_bot: Option<bool>,
     #[serde(rename = "channelID")]
-    pub channel_id: Option<f64>
+    pub channel_id: Option<f64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ChatChannel {
     pub id: Option<i32>,
-    pub name: String
+    pub name: String,
 }
 #[derive(Clone, Debug, Deserialize, Serialize, Default)]
 pub struct ConnectedUsers {
     pub users: Option<i32>,
-    pub bots: Option<i32>
+    pub bots: Option<i32>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Raw Order and Balance Data
@@ -144,7 +144,7 @@ pub struct Execution {
     pub foreign_notional: Option<f64>,
     #[serde(rename = "transactTime")]
     pub transact_time: Option<DateTime<Utc>>,
-    pub timestamp: Option<DateTime<Utc>>
+    pub timestamp: Option<DateTime<Utc>>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Swap Funding History
@@ -156,7 +156,7 @@ pub struct Funding {
     #[serde(rename = "fundingRate")]
     pub funding_rate: Option<f64>,
     #[serde(rename = "fundingRateDaily")]
-    pub funding_rate_daily: Option<f64>
+    pub funding_rate_daily: Option<f64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Tradeable Contracts, Indices, and History
@@ -346,12 +346,12 @@ pub struct Instrument {
     pub option_underlying_price: Option<f64>,
     #[serde(rename = "settledPrice")]
     pub settled_price: Option<f64>,
-    pub timestamp: Option<DateTime<Utc>>
+    pub timestamp: Option<DateTime<Utc>>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize, Default)]
 pub struct InstrumentInterval {
     pub intervals: Vec<String>,
-    pub symbols: Vec<String>
+    pub symbols: Vec<String>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct IndexComposite {
@@ -363,7 +363,7 @@ pub struct IndexComposite {
     #[serde(rename = "lastPrice")]
     pub last_price: Option<f64>,
     pub weight: Option<f64>,
-    pub logged: Option<DateTime<Utc>>
+    pub logged: Option<DateTime<Utc>>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Insurance Fund Data
@@ -371,7 +371,7 @@ pub struct Insurance {
     pub currency: String,
     pub timestamp: DateTime<Utc>,
     #[serde(rename = "walletBalance")]
-    pub wallet_balance: Option<i64>
+    pub wallet_balance: Option<i64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Information on Top Users
@@ -379,7 +379,7 @@ pub struct Leaderboard {
     pub name: String,
     #[serde(rename = "isRealName")]
     pub is_real_name: Option<bool>,
-    pub profit: Option<f64>
+    pub profit: Option<f64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Active Liquidations
@@ -390,7 +390,7 @@ pub struct Liquidation {
     pub side: Option<super::Side>,
     pub price: Option<f64>,
     #[serde(rename = "leavesQty")]
-    pub leaves_qty: Option<i64>
+    pub leaves_qty: Option<i64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Account Notifications
@@ -406,7 +406,7 @@ pub struct GlobalNotification {
     pub persist: Option<bool>,
     #[serde(rename = "waitForVisibility")]
     pub wait_for_visibility: Option<bool>,
-    pub sound: Option<String>
+    pub sound: Option<String>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Placement, Cancellation, Amending, and History
@@ -468,7 +468,7 @@ pub struct Order {
     pub text: Option<String>,
     #[serde(rename = "transactTime")]
     pub transact_time: Option<DateTime<Utc>>,
-    pub timestamp: Option<DateTime<Utc>>
+    pub timestamp: Option<DateTime<Utc>>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct OrderBookL2 {
@@ -476,7 +476,7 @@ pub struct OrderBookL2 {
     pub id: i64,
     pub side: super::Side,
     pub size: Option<i64>,
-    pub price: Option<f64>
+    pub price: Option<f64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize, Default)]
 pub struct Ny(serde_json::Value);
@@ -657,7 +657,7 @@ pub struct Position {
     #[serde(rename = "lastPrice")]
     pub last_price: Option<f64>,
     #[serde(rename = "lastValue")]
-    pub last_value: Option<i64>
+    pub last_value: Option<i64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Best Bid/Offer Snapshots & Historical Bins
@@ -671,7 +671,7 @@ pub struct Quote {
     #[serde(rename = "askPrice")]
     pub ask_price: Option<f64>,
     #[serde(rename = "askSize")]
-    pub ask_size: Option<i64>
+    pub ask_size: Option<i64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Historical Settlement Data
@@ -690,7 +690,7 @@ pub struct Settlement {
     #[serde(rename = "taxBase")]
     pub tax_base: Option<i64>,
     #[serde(rename = "taxRate")]
-    pub tax_rate: Option<f64>
+    pub tax_rate: Option<f64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Exchange Statistics
@@ -703,7 +703,7 @@ pub struct Stats {
     #[serde(rename = "openInterest")]
     pub open_interest: Option<i64>,
     #[serde(rename = "openValue")]
-    pub open_value: Option<i64>
+    pub open_value: Option<i64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct StatsHistory {
@@ -712,7 +712,7 @@ pub struct StatsHistory {
     pub root_symbol: String,
     pub currency: Option<String>,
     pub volume: Option<i64>,
-    pub turnover: Option<i64>
+    pub turnover: Option<i64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct StatsUSD {
@@ -722,7 +722,7 @@ pub struct StatsUSD {
     pub turnover24h: Option<i64>,
     pub turnover30d: Option<i64>,
     pub turnover365d: Option<i64>,
-    pub turnover: Option<i64>
+    pub turnover: Option<i64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Individual & Bucketed Trades
@@ -741,7 +741,7 @@ pub struct Trade {
     #[serde(rename = "homeNotional")]
     pub home_notional: Option<f64>,
     #[serde(rename = "foreignNotional")]
-    pub foreign_notional: Option<f64>
+    pub foreign_notional: Option<f64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct TradeBin {
@@ -760,7 +760,7 @@ pub struct TradeBin {
     #[serde(rename = "homeNotional")]
     pub home_notional: Option<f64>,
     #[serde(rename = "foreignNotional")]
-    pub foreign_notional: Option<f64>
+    pub foreign_notional: Option<f64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Wallet {
@@ -805,7 +805,7 @@ pub struct Wallet {
     pub addr: Option<String>,
     pub script: Option<String>,
     #[serde(rename = "withdrawalLock")]
-    pub withdrawal_lock: Option<Vec<String>>
+    pub withdrawal_lock: Option<Vec<String>>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize, Default)]
 pub struct Transaction {
@@ -824,7 +824,7 @@ pub struct Transaction {
     pub text: Option<String>,
     #[serde(rename = "transactTime")]
     pub transact_time: Option<DateTime<Utc>>,
-    pub timestamp: Option<DateTime<Utc>>
+    pub timestamp: Option<DateTime<Utc>>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct AccessToken {
@@ -833,7 +833,7 @@ pub struct AccessToken {
     pub ttl: Option<f64>,
     pub created: Option<DateTime<Utc>>,
     #[serde(rename = "userId")]
-    pub user_id: Option<f64>
+    pub user_id: Option<f64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize, Default)]
 pub struct Affiliate {
@@ -867,7 +867,7 @@ pub struct Affiliate {
     #[serde(rename = "referralDiscount")]
     pub referral_discount: Option<f64>,
     #[serde(rename = "affiliatePayout")]
-    pub affiliate_payout: Option<f64>
+    pub affiliate_payout: Option<f64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Daily Quote Fill Ratio Statistic
@@ -883,7 +883,7 @@ pub struct QuoteFillRatio {
     #[serde(rename = "dealtMavg7")]
     pub dealt_mavg7: Option<f64>,
     #[serde(rename = "quoteFillRatioMavg7")]
-    pub quote_fill_ratio_mavg7: Option<f64>
+    pub quote_fill_ratio_mavg7: Option<f64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// Account Operations
@@ -911,7 +911,7 @@ pub struct User {
     pub geoip_country: Option<String>,
     #[serde(rename = "geoipRegion")]
     pub geoip_region: Option<String>,
-    pub typ: Option<String>
+    pub typ: Option<String>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize, Default)]
 pub struct UserCommissionsBySymbol(serde_json::Value);
@@ -991,7 +991,7 @@ pub struct Margin {
     pub timestamp: Option<DateTime<Utc>>,
     #[serde(rename = "grossLastValue")]
     pub gross_last_value: Option<i64>,
-    pub commission: Option<f64>
+    pub commission: Option<f64>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// User communication SNS token
@@ -1001,7 +1001,7 @@ pub struct CommunicationToken {
     pub user_id: i32,
     #[serde(rename = "deviceToken")]
     pub device_token: String,
-    pub channel: String
+    pub channel: String,
 }
 #[derive(Clone, Debug, Deserialize, Serialize)]
 /// User Events for auditing
@@ -1023,7 +1023,7 @@ pub struct UserEvent {
     pub geoip_sub_region: Option<String>,
     #[serde(rename = "eventMeta")]
     pub event_meta: Option<EventMetaEventMeta>,
-    pub created: DateTime<Utc>
+    pub created: DateTime<Utc>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize, Default)]
 pub struct EventMetaEventMeta(serde_json::Value);
@@ -1078,7 +1078,7 @@ pub struct UserPreferences {
     #[serde(rename = "tickerPinned")]
     pub ticker_pinned: Option<bool>,
     #[serde(rename = "tradeLayout")]
-    pub trade_layout: Option<String>
+    pub trade_layout: Option<String>,
 }
 #[derive(Clone, Debug, Deserialize, Serialize, Default)]
 pub struct OrderBookBinningOrderBookBinning(serde_json::Value);
