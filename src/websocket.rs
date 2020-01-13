@@ -24,7 +24,9 @@ type WSStream = WebSocketStream<MaybeTlsStream<TcpStream>>;
 
 impl BitMEX {
     pub async fn websocket(&self) -> Fallible<BitMEXWebsocket> {
-        let (stream, _) = connect_async(Url::parse(&get_ws_url(self.is_testnet)).unwrap()).await?;
+        let url = get_ws_url(self.is_testnet);
+        log::debug!("websocket url: {}", url);
+        let (stream, _) = connect_async(Url::parse(&url).unwrap()).await?;
         Ok(BitMEXWebsocket::new(stream))
     }
 }
@@ -94,6 +96,12 @@ fn parse_message(msg: WSMessage) -> Message {
                 Err(_) => unreachable!("Received message from BitMEX: '{}'", others),
             },
         },
-        _ => unreachable!(),
+        WSMessage::Close(_) => {
+            log::warn!("get websocket closed message");
+            Message::Closed
+        },
+        _ => {
+            unreachable!("get unreachable websocket message")
+        }
     }
 }

@@ -21,6 +21,7 @@ pub enum Message {
     Info(InfoMessage),
     CancelAllAfter(CancelAllAfterMessage),
     Pong,
+    Closed,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
