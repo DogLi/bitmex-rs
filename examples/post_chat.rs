@@ -9,7 +9,7 @@ async fn main() -> Fallible<()> {
     ::dotenv::dotenv().ok();
     ::env_logger::init();
 
-    let bm = BitMEX::with_credential(&var("BITMEX_KEY")?, &var("BITMEX_SECRET")?);
+    let bm = BitMEX::with_credential(&var("BITMEX_KEY")?, &var("BITMEX_SECRET")?, true);
     let ret = bm
         .request(PostChatRequest {
             message: "hello2 from bot".to_string(),

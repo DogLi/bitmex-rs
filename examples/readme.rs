@@ -12,6 +12,7 @@ async fn main() -> Fallible<()> {
     let bm = bitmex::BitMEX::with_credential(
         &std::env::var("BITMEX_KEY")?,
         &std::env::var("BITMEX_SECRET")?,
+        true,
     );
 
     // All the requests to BitMEX server afterwards will go through HTTP Restful API.

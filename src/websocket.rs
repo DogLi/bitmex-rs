@@ -1,16 +1,11 @@
-mod command;
-mod message;
-mod topic;
+pub mod command;
+pub mod message;
+pub mod topic;
 
-pub use self::command::Command;
-pub use self::message::Message as BitMEXWsMessage;
-pub use self::message::{
-    Action, CancelAllAfterMessage, ErrorMessage, InfoMessage, Limit, SuccessMessage, TableFilter,
-    TableMessage,
-};
-pub use self::topic::Topic;
-use crate::consts::WS_URL;
+use crate::consts::get_ws_url;
 use crate::BitMEX;
+use command::Command;
+use message::Message;
 use failure::Fallible;
 use futures::sink::Sink;
 use futures::stream::Stream;
@@ -29,7 +24,7 @@ type WSStream = WebSocketStream<MaybeTlsStream<TcpStream>>;
 
 impl BitMEX {
     pub async fn websocket(&self) -> Fallible<BitMEXWebsocket> {
-        let (stream, _) = connect_async(Url::parse(&WS_URL).unwrap()).await?;
+        let (stream, _) = connect_async(Url::parse(&get_ws_url(self.is_testnet)).unwrap()).await?;
         Ok(BitMEXWebsocket::new(stream))
     }
 }
@@ -76,7 +71,7 @@ impl Sink<Command> for BitMEXWebsocket {
 }
 
 impl Stream for BitMEXWebsocket {
-    type Item = Fallible<BitMEXWsMessage>;
+    type Item = Fallible<Message>;
 
     fn poll_next(self: Pin<&mut Self>, cx: &mut Context) -> Poll<Option<Self::Item>> {
         let this = self.project();
@@ -90,10 +85,10 @@ impl Stream for BitMEXWebsocket {
     }
 }
 
-fn parse_message(msg: WSMessage) -> BitMEXWsMessage {
+fn parse_message(msg: WSMessage) -> Message {
     match msg {
         WSMessage::Text(message) => match message.as_str() {
-            "pong" => BitMEXWsMessage::Pong,
+            "pong" => Message::Pong,
             others => match from_str(others) {
                 Ok(r) => r,
                 Err(_) => unreachable!("Received message from BitMEX: '{}'", others),

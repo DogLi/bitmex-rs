@@ -10,7 +10,7 @@ async fn main() -> Fallible<()> {
     ::dotenv::dotenv().ok();
     ::env_logger::init();
 
-    let bm = BitMEX::with_credential(&var("BITMEX_KEY")?, &var("BITMEX_SECRET")?);
+    let bm = BitMEX::with_credential(&var("BITMEX_KEY")?, &var("BITMEX_SECRET")?, true);
     let mut client = bm.websocket().await?;
     println!("WebSocket handshake has been successfully completed");
 

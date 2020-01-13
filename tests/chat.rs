@@ -33,7 +33,7 @@ fn post_chat() -> Fallible<()> {
 
     let mut rt = Runtime::new()?;
 
-    let bm = BitMEX::with_credential(&var("BITMEX_KEY")?, &var("BITMEX_SECRET")?);
+    let bm = BitMEX::with_credential(&var("BITMEX_KEY")?, &var("BITMEX_SECRET")?, true);
     let fut = bm.request(PostChatRequest {
         message: "Hey there".into(),
         channel_id: Some(1.),

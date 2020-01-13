@@ -12,7 +12,7 @@ fn get_api_key() -> Fallible<()> {
 
     let mut rt = Runtime::new()?;
 
-    let bm = BitMEX::with_credential(&var("BITMEX_KEY")?, &var("BITMEX_SECRET")?);
+    let bm = BitMEX::with_credential(&var("BITMEX_KEY")?, &var("BITMEX_SECRET")?, true);
     let fut = bm.request(GetApiKeyRequest {
         ..Default::default()
     });

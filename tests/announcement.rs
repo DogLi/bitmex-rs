@@ -28,7 +28,7 @@ fn get_announcement_urgent() -> Fallible<()> {
 
     let mut rt = Runtime::new()?;
 
-    let bm = BitMEX::with_credential(&var("BITMEX_KEY")?, &var("BITMEX_SECRET")?);
+    let bm = BitMEX::with_credential(&var("BITMEX_KEY")?, &var("BITMEX_SECRET")?, true);
     let fut = bm.request(GetAnnouncementUrgentRequest {});
 
     debug!("{:?}", rt.block_on(fut)?);
