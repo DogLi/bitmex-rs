@@ -6,6 +6,7 @@ pub use self::requests::*;
 use reqwest::Method;
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Serialize};
+use failure::_core::str::FromStr;
 
 pub trait Request: Serialize {
     const METHOD: Method;
@@ -26,6 +27,20 @@ pub enum Side {
     Sell,
     #[serde(rename = "")]
     Unknown, // BitMEX sometimes has empty side due to unknown reason
+}
+
+impl FromStr for Side {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        if s.to_lowercase() == "buy" {
+            Ok(Self::Buy)
+        } else if s.to_lowercase() == "sell" {
+            Ok(Self::Sell)
+        } else {
+            Ok(Self::Unknown)
+        }
+    }
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
