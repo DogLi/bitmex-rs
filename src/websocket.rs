@@ -4,7 +4,7 @@ pub mod topic;
 
 use crate::consts::get_ws_url;
 use crate::BitMEX;
-use command::Command;
+pub use command::Command;
 use message::Message;
 use failure::Fallible;
 use futures::sink::Sink;

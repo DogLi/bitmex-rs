@@ -1,4 +1,5 @@
-use bitmex::websocket::{Command, Topic};
+use bitmex::websocket::{Command, topic::Topic};
+
 use bitmex::BitMEX;
 use failure::Fallible;
 use futures::sink::SinkExt;
@@ -10,7 +11,7 @@ async fn main() -> Fallible<()> {
     ::dotenv::dotenv().ok();
     ::env_logger::init();
 
-    let bm = BitMEX::with_credential(&var("BITMEX_KEY")?, &var("BITMEX_SECRET")?, true);
+    let bm = BitMEX::with_credential(&var("BITMEX_KEY_TEST")?, &var("BITMEX_SECRET_TEST")?, true);
 
     let mut client = bm.websocket().await?;
     println!("WebSocket handshake has been successfully completed");
