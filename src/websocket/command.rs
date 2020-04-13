@@ -1,7 +1,7 @@
 use super::topic::Topic;
 use crate::consts::get_ws_url;
 use crate::BitMEX;
-use failure::Fallible;
+use fehler::throws;
 use hyper::Method;
 use serde_derive::{Deserialize, Serialize};
 use url::Url;
@@ -19,8 +19,10 @@ pub enum Command {
 }
 
 impl Command {
-    pub fn authenticate(bm: &BitMEX, expires: i64) -> Fallible<Command> {
-        let (key, sig) = bm.signature(Method::GET, expires, &Url::parse(&get_ws_url(bm.is_testnet))?, "")?;
-        Ok(Command::Authenticate(key.to_string(), expires, sig))
+    #[throws(failure::Error)]
+    pub fn authenticate(bm: &BitMEX, expires: i64, is_testnet: bool) -> Command {
+        let ws_url = get_ws_url(is_testnet);
+        let (key, sig) = bm.signature(Method::GET, expires, &Url::parse(&ws_url)?, "")?;
+        Command::Authenticate(key.to_string(), expires, sig)
     }
 }

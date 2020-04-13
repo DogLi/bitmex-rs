@@ -20,6 +20,7 @@ pub enum Message {
     Table(Box<TableMessage<Value>>),
     Info(InfoMessage),
     CancelAllAfter(CancelAllAfterMessage),
+    Ping,
     Pong,
     Closed,
 }

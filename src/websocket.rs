@@ -2,11 +2,17 @@ pub mod command;
 pub mod message;
 pub mod topic;
 
+pub use serde_json::Value;
+pub use self::command::Command;
+pub use self::message::Message as BitMEXWsMessage;
+pub use self::topic::Topic;
+
 use crate::consts::get_ws_url;
+use crate::error::BitMEXError;
 use crate::BitMEX;
-pub use command::Command;
 use message::Message;
 use failure::Fallible;
+use fehler::{throw, throws};
 use futures::sink::Sink;
 use futures::stream::Stream;
 use futures::task::{Context, Poll};
@@ -80,28 +86,32 @@ impl Stream for BitMEXWebsocket {
         let poll = this.inner.poll_next(cx);
         match poll {
             Poll::Ready(Some(Err(e))) => Poll::Ready(Some(Err(e.into()))),
-            Poll::Ready(Some(Ok(m))) => Poll::Ready(Some(Ok(parse_message(m)))),
+            Poll::Ready(Some(Ok(m))) => match parse_message(m) {
+                Ok(m) => Poll::Ready(Some(Ok(m))),
+                Err(e) => Poll::Ready(Some(Err(e))),
+            },
             Poll::Ready(None) => Poll::Ready(None),
             Poll::Pending => Poll::Pending,
         }
     }
 }
 
-fn parse_message(msg: WSMessage) -> Message {
+#[throws(failure::Error)]
+fn parse_message(msg: WSMessage) -> BitMEXWsMessage {
     match msg {
         WSMessage::Text(message) => match message.as_str() {
             "pong" => Message::Pong,
             others => match from_str(others) {
                 Ok(r) => r,
-                Err(_) => unreachable!("Received message from BitMEX: '{}'", others),
+                Err(_) => unreachable!("Cannot deserialize message from BitMEX: '{}'", others),
             },
         },
         WSMessage::Close(_) => {
             log::warn!("get websocket closed message");
-            Message::Closed
+            BitMEXWsMessage::Closed
         },
-        _ => {
-            unreachable!("get unreachable websocket message")
-        }
+        WSMessage::Ping(_) => BitMEXWsMessage::Ping,
+        WSMessage::Pong(_) => BitMEXWsMessage::Pong,
+        WSMessage::Binary(c) => throw!(BitMEXError::UnexpectedWebsocketBinaryContent(c)),
     }
 }
